@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'empresas.apps.EmpresasConfig',
-    'whitenoise.runserver_nostatic'
+    'whitenoise.runserver_nostatic',
+    'import_export'
 ]
 
 MIDDLEWARE = [

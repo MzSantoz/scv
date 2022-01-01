@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from .models import Documento, Empresa
 
 class DocumentoInline(admin.StackedInline):
@@ -7,7 +9,15 @@ class DocumentoInline(admin.StackedInline):
     model = Documento
     extra = 3
 
-class EmpresaAdmin(admin.ModelAdmin):
+class EmpresaResource(resources.ModelResource):
+    class Meta:
+        model = Empresa
+        exclude = ('id',)
+        widgets = {
+                'data_da_visita': {'format': '%d.%m.%Y'},
+                }
+
+class EmpresaAdmin(ImportExportModelAdmin):
     def indicado(self, obj):
         colors = {
             'S': 'green',
@@ -23,6 +33,8 @@ class EmpresaAdmin(admin.ModelAdmin):
     list_filter = ('razao_social', 'data_da_visita')
     search_fields = ['razao_social', 'endereco']
     inlines = [DocumentoInline]
+    resource_class = EmpresaResource
+
 
 admin.site.register(Empresa, EmpresaAdmin)
 admin.site.site_header = 'Controle de Visitas - GrupoGP'
